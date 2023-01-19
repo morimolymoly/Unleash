@@ -1,5 +1,5 @@
 [package]
-name = "shellcode-dbg"
+name = "unleash"
 version = "0.1.0"
 edition = "2021"
 
