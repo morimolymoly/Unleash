@@ -9,6 +9,7 @@ use core::ffi::c_void;
 use std::ptr;
 use std::arch::asm;
 use std::mem::transmute;
+use pancurses::*;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about=None)]
@@ -22,7 +23,7 @@ fn main() {
     
     let filename = args.file;
 
-    println!("SHELLCODE DBG Ver0.1");
+    println!("Unleash ver0.1");
     println!("[*] Processing shellcode file {} ....", filename);
 
     let mut scfile = File::open(filename).unwrap();
@@ -38,13 +39,17 @@ fn main() {
     println!("[*] Alloocated!");
     println!("[*] Base Address: 0x{:x}", code.addr());
 
-    println!("[*] Copying shellcode ...");
+    println!("[*] Copying the shellcode ...");
     unsafe {
         let src = buf.as_ptr() as *mut c_void;
         copy_nonoverlapping(src, code, size);
     }
 
-    println!("[*] Unleash shellcode!");
+    println!("[*] Type and launch the shellcode!");
+    let window = initscr();
+    window.getch();
+
+    println!("[*] Unleash the shellcode!");
     unsafe {
         let run = transmute::<*mut c_void, fn()>(code);
         run();
